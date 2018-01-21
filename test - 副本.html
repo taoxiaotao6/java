@@ -1,0 +1,118 @@
+Special permissions (and Windows Vista or later) are required when cloning repositories with symbolic links, therefore support for symbolic links is disabled by default. Use git clone -c core.symlinks=true <URL> to enable it, see details here.
+If configured to use Plink, you will have to connect with putty first and accept the host key.
+Some console programs interact correctly with MinTTY only when called through winpty (e.g. the Python console needs to be started as winpty python instead of just python).
+cURL uses $HOME/_netrc instead of $HOME/.netrc.
+If you specify command-line options starting with a slash, POSIX-to-Windows path conversion will kick in converting e.g. "/usr/bin/bash.exe" to "C:\Program Files\Git\usr\bin\bash.exe". When that is not desired -- e.g. "--upload-pack=/opt/git/bin/git-upload-pack" or "-L/regex/" -- you need to set the environment variable MSYS_NO_PATHCONV temporarily, like so:
+MSYS_NO_PATHCONV=1 git blame -L/pathconv/ msys2_path_conv.cc
+Alternatively, you can double the first slash to avoid POSIX-to-Windows path conversion.
+    
+Git for Windows will not allow commits containing DOS-style truncated 8.3-format filenames ending with a tilde and digit, such as mydocu~1.txt. A workaround is to call git config core.protectNTFS false, which is not advised. Instead, add a rule to .gitignore to ignore the file(s), or rename the file(s).
+Many Windows programs (including the Windows Explorer) have problems with directory trees nested so deeply that the absolute path is longer than 260 characters. Therefore, Git for Windows refuses to check out such files by default. You can overrule this default by setting core.longPaths, e.g. git clone -c core.longPaths=true ....
+Some commands are not yet supported on Windows and excluded from the installation.
+As Git for Windows is shipped without Python support, all Git commands requiring Python are not yet supported; e.g. git p4.
+The Quick Launch icon will only be installed for the user running setup (typically the Administrator). This is a technical restriction and will not change.
+Should you encounter other problems, please search the bug tracker and the mailing list, chances are that the problem was reported already. If it has not been reported, please follow our bug reporting guidelines and report the bug.
+Licenses
+
+Git is licensed under the GNU Public License version 2.
+Git for Windows also contains Embedded CAcert Root Certificates. For more information please go to https://www.cacert.org/policy/RootDistributionLicense.php.
+This package contains software from a number of other projects including Bash, zlib, curl, msmtp, tcl/tk, perl, MSYS2 and a number of libraries and utilities from the GNU project, licensed under the GNU Public License. Likewise, it contains Perl which is dual licensed under the GNU Public License and the Artistic License.
+Changes since Git for Windows v2.7.1(2) (February 12th 2016)
+
+New Features
+Git for Windows' SDK version 1.0.2 has been released.
+The "list references" window of gitk is now wider by default.
+Comes with Git 2.7.2.
+Bug Fixes
+The user is now presented with a nice error message when calling node while node.exe is not in the PATH (this bug also affected other interactive console programs such as python and php).
+The arrow keys are respected again in gitk.
+When a too-long path is encountered, git clean -dfx no longer aborts quietly.
+Git GUI learned to stage lines appended to a single-line file.
+When launching C:\Program Files\Git\bin\bash -l -i in a cmd window and pressing Ctrl+C, the console is no longer corrupted (previously, the bash.exe redirector would terminate and both cmd & Bash would compete for user input).
+Changes since Git for Windows v2.7.1 (February 6th 2016)
+
+New Features
+The context menu items in the explorer now show icons.
+Bug Fixes
+A bug was fixed where worktrees would forget their location e.g. after an interactive rebase.
+Thanks to Eric Lawrence and Martijn Laan, our installer sports a better way to look for system files now.
+Changes since Git for Windows v2.7.0(2) (February 2nd 2016)
+
+New Features
+Comes with Git 2.7.1.
+Bug Fixes
+Git GUI now starts properly even when the working directory contains non-ASCII characters.
+We forgot to enable Address Space Layout Randomization and Data Execution Prevention on our Git wrapper, and this is now fixed.
+A bug in one of the DLLs used by Git for Windows was fixed that prevented Git from working properly in 64-bit setups where the FLG_LDR_TOP_DOWN global flag is set.
+Changes since Git for Windows v2.7.0 (January 5th 2016)
+
+New Features
+To stave off exploits, Git for Windows now uses Address Space Layout Randomization (ASLR) and Data Execution Prevention (DEP).
+Git for Windows' support for git pull --rebase=interactive that was dropped when the pull command was rewritten in C, was resurrected.
+The installers are now dual signed with SHA-2 and SHA-1 certificates.
+The uninstaller is signed now, too.
+Bug Fixes
+When installing as administrator, we no longer offer the option to install quiicklaunch icons because quicklaunch icons can only be installed per-user.
+If a ~/.bashrc is detected without a ~/.bash_profile, the generated file will now also source ~/.profile if that exists.
+The environment variable HOME can now be used to set the home directory even when running with accounts that are part of a different domain than the current (non-domain-joined) machine (in which case the MSYS2 runtime has no way to emulate POSIX-style UIDs).
+Git can now fetch and push via HTTPS even when the http.sslCAInfo config variable was unset.
+Git for Windows is now handling the case gracefully where the current user has no permission to list the parent of the current directory.
+More file locking issues ("Unlink of file ... failed. Should I try again?") were fixed.
+Changes since Git for Windows v2.6.4 (December 14th 2015)
+
+New Features
+Comes with Git v2.7.0.
+Bug Fixes
+
+Non-ASCII command-lines are now passed properly to shell scripts.
+Changes since Git for Windows v2.6.3 (November 10th 2015)
+
+New Features
+Comes with Git v2.6.4.
+Also available as .tar.bz2 packages (you need an MSYS2/Cygwin-compatible unpacker to recreate the symbolic links correctly).
+Bug Fixes
+
+Git for Windows v2.6.3's installer failed to elevate privileges automatically (reported three times, making it a charm), and as a consequence Git for Windows 2.6.3 was frequently installed per-user by mistake
+The bug where SHELL_PATH had spaces and that was reported multiple times has been fixed.
+An additional work-around from upstream Git for SHELL_PATH containing spaces (fixing problems with interactive rebase's exec command has been applied.
+Changes since Git for Windows v2.6.2 (October 19th 2015)
+
+New Features
+Comes with Git v2.6.3.
+Enables the stack smasher to protect against buffer overflows.
+Bug Fixes
+Git Bash works now even when choosing Windows' default console and installing into a short path (e.g. C:\Git).
+Notepad can now really be used to edit commit messages.
+Git's garbage collector now handles stale refs/remotes/origin/HEAD gracefully.
+The regression in Git for Windows 2.6.2 that it required administrator privileges to be installed is now fixed.
+When notepad is configured as default editor, we no longer do anything specially unless editing files inside .git/.
+Changes since Git for Windows v2.6.1 (October 5th 2015)
+
+New Features
+Comes with Git v2.6.2
+Users who are part of a Windows domain now have sensible default values for user.name and user.email.
+Bug Fixes
+We no longer run out of page file space when git fetching large repositories.
+The description of Windows' default console is accurate now (the console became more powerful in Windows 10).
+Git GUI now respects the terminal emulation chosen at install time when running the Git Bash.
+Changes since Git-2.6.0 (September 29th 2015)
+
+New Features
+Comes with Git 2.6.1
+The installer now writes the file /etc/install-options.txt to record which options were chosen at install time.
+Replaces git flow with the AVH edition which is maintained actively, in surprising and disappointing contrast to Vincent Driessen's very own project.
+Bug Fixes
+The PATH variable is now really left alone when choosing the "Use Git from Git Bash only" option in the installer. Note that upgrading Git for Windows will call the previous version's uninstaller, which might still have that bug.
+Git GUI's Registry>Create Desktop Icon now generates correct shortcuts.
+The antiword utility to render Word documents for use in git diff now works correctly.
+In 64-bit installations, we no longer set a pack size limit by default.
+When installing Git for Windows as regular user, the installer no longer tries to create privileged registry keys.
+Changes since Git-2.5.3 (September 18th 2015)
+
+New Features
+Comes with Git 2.6.0
+The WhoUses.exe tool to determine which process holds a lock on a given file (which was shipped with Git for Windows 1.x) gets installed alongside Git for Windows again.
+The values CurrentVersion, InstallPath and LibexecPath are added to the HKEY_LOCAL_MACHINE\Software\GitForWindows registry key to help third-party add-ons to find us.
+When fetching or pushing with Git without a console, we now fall back to Git GUI's askpass helper to ask for pass phrases.
+When run through <INSTALL_PATH>\cmd\git.exe, Git will find tools in $HOME/bin now.
+Bug Fixes
